@@ -26,54 +26,52 @@
 
 <%
     String errorMessage = "";
-    Date currentTimeStr = new Date();
+    Date currentTime = new Date();
     String ticketStr = request.getParameter("ticketStr");
     boolean openGate = false;
     response.setIntHeader("Refresh", 20);
     Date issueDate = null;
-    String destinationSation = null;
-    boolean validDateTime =false;
-    boolean validFormat=false;
-    boolean validStation=false;
+    String destinationStation = null;
+    boolean validDateTime = false;
+    boolean validFormat = false;
+    boolean validStation = false;
     String endStationStr = request.getParameter("endStation");
-    
-    
+
     if (ticketStr != null) {
-    try {
-            //  but allows for refactoring
+        try {
             JAXBContext jaxbContext = JAXBContext.newInstance("org.solent.com528.project.model.dto");
             Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
             Ticket ticket = (Ticket) jaxbUnMarshaller.unmarshal(new StringReader(ticketStr));
             issueDate = ticket.getIssueDate();
-            destinationSation = ticket.getEndStation();
+            destinationStation = ticket.getEndStation();
         } catch (Exception ex) {
             throw new IllegalArgumentException("could not marshall to Ticket ticketXML=" + ticketStr);
         }
     }
-    
+
     try {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(issueDate);
-        calendar.add(Calendar.HOUR_OF_DAY, 24);
-        validDateTime = currentTimeStr.before(calendar.getTime());
+        Calendar newCalendar = Calendar.getInstance();
+        newCalendar.setTime(issueDate);
+        newCalendar.add(Calendar.HOUR_OF_DAY, 24);
+        validDateTime = currentTime.before(newCalendar.getTime());
     } catch (Exception e) {
     }
-    
+
     validFormat = TicketEncoderImpl.validateTicket(ticketStr);
-    
+
     try {
-            
-    validStation = endStationStr.equals(destinationSation);
+
+        validStation = endStationStr.equals(destinationStation);
+
+    } catch (Exception e) {
+    }
+    boolean valid;
     
-        } catch (Exception e) {
-        }
-    boolean valid = false;
-//    
-//    if (TicketEncoderImpl.validateTicket(ticketStr)) {
-//        valid = true;
-//    } else {
-//        valid = false ;
-//    }
+    if (TicketEncoderImpl.validateTicket(ticketStr)) {
+        valid = true;
+    } else {
+        valid = false ;
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -82,9 +80,8 @@
         <title>Open gate</title>
     </head>
     <body>
-        <h1>Open Gate with Ticket</h1>
-        <!-- print error message if there is one -->
-        <div style="color:red;"><%=errorMessage%></div>
+        <h1>Open Gate with Ticket</h1>        
+        <div style="color:red;"><%=errorMessage%></div> <!--error message-->
         <form>
             <table>
                 <tr>
@@ -116,7 +113,7 @@
                 <tr>
                     <td>Current Time</td>
                     <td>
-                        <p><%= currentTimeStr.toString()%> (auto refreshed every 20 seconds)</p>
+                        <p><%= currentTime.toString()%> (auto refreshing every 20 seconds)</p>
                     </td>
                 </tr>
                 <tr>
@@ -128,9 +125,10 @@
         </form> 
         <BR>
         <% if (valid) { %>
-        <div style="color:green;font-size:x-large">GATE OPEN*change something</div>
+        <%  openGate = true;%>
+        <div style="color:green;font-size:x-large">Valid Ticket, Gate Opening</div>
         <%  } else {  %>
-        <div style="color:red;font-size:x-large">GATE LOCKED*change something</div>
+        <div style="color:red;font-size:x-large">Invalid Ticket, Gate will remain Closed</div>
         <% }%>
     </body>
 </html>
