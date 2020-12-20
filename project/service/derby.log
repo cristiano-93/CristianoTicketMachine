@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Wed Dec 16 09:10:10 GMT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0176-6ad0-63bc-00000d881868 
+on database directory C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\service\target\tmp\farmdb  with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@30946e09 
+Loaded from file:/C:/Users/Cristiano/.m2/repository/org/apache/derby/derby/10.9.1.0/derby-10.9.1.0.jar
+java.vendor=Red Hat, Inc.
+java.runtime.version=11.0.8+10-LTS
+user.dir=C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\service
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
