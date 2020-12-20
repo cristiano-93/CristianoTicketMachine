@@ -199,8 +199,5 @@
             <input type="hidden" name="stationName" value="<%=station.getName()%>">
             <button type="submit" >add ticket machine to station</button>
         </form> 
-        <h1><%
-            for (TicketMachine ticketMachine : ticketMachineList) 
-        %></h1>
     </body>
 </html>

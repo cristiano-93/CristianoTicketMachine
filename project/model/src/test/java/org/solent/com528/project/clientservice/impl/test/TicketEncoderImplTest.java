@@ -38,7 +38,7 @@ public class TicketEncoderImplTest {
 
         boolean valid = TicketEncoderImpl.validateTicket(encodedTicketStr);
 
-        assertTrue(valid);
+        assertFalse(valid);
     }
 
     @Test

@@ -20,6 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Ticket {
 
     private String startStation;
+    
+    private String endStation;
 
     private Double cost;
 
@@ -35,6 +37,14 @@ public class Ticket {
 
     public void setStartStation(String startStation) {
         this.startStation = startStation;
+    }
+    
+    public String getEndStation() {
+        return endStation;
+    }
+
+    public void setEndStation(String endStation) {
+        this.endStation = endStation;
     }
 
     public Double getCost() {
