@@ -1,11 +1,17 @@
 <%-- 
     Document   : ticketMachine
-    Created on : 20 Dec 2020, 16:20:47
+    Created on : 13 Dec 2020, 16:20:47
     Author     : Cristiano Local
 --%>
 
+<%@page import="org.solent.com528.project.model.dto.Station"%>
+<%@page import="java.util.*"%>
+<%@page import="org.solent.com528.project.model.dao.StationDAO"%>
+<%@page import="org.solent.com528.project.impl.webclient.WebClientObjectFactory"%>
+<%@page import="org.solent.com528.project.model.service.ServiceFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <%@page import="java.util.Calendar"%>
 <%@page import="org.solent.com528.project.clientservice.impl.TicketEncoderImpl"%>
 <%@page import="org.solent.com528.project.model.dto.Ticket"%>
@@ -13,44 +19,84 @@
 <%@page import="org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.text.DateFormat"%>
-<%@page import="java.util.Date"%>
 <%@page import="javax.xml.bind.JAXBContext"%>
 <%@page import="java.io.StringWriter"%>
 <%@page import="javax.xml.bind.Marshaller"%>
 
-<%
-    String validFromStr = request.getParameter("validFrom");
-    String validToStr = request.getParameter("validTo");
+<%    
+    // Setting up Zones/Stations values
+    String validFrom = request.getParameter("validFrom");
+    String validTo = request.getParameter("validTo"); 
+    String startStation = request.getParameter("startStation");     
+    String startZone = request.getParameter("startZone");          
+    String endZone = request.getParameter("endZone");    
+    String endStation = request.getParameter("endStation");
+    String destination = request.getParameter("destinationStation");
     
-    String startZoneStr = request.getParameter("zoneStart");    
-    String startStationStr = request.getParameter("startStation");
+    ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
+    String startStationName = WebClientObjectFactory.getStationName();
+    Integer startStationZone = WebClientObjectFactory.getStationZone();
     
-    String endZoneStr = request.getParameter("zoneEnd");    
-    String endStationStr = request.getParameter("endStation");
+    //Service
     String errorMessage = "";
-    String currentTimeStr = new Date().toString();
+    StationDAO stationDAO = serviceFacade.getStationDAO();
+    Set<Integer> zones = stationDAO.getAllZones();
+    List<Station> stationsList = new ArrayList<Station>();
+    String actionStr = request.getParameter("action");
+    String zoneStr = request.getParameter("zone");
+    // return station list for zone
+    if (zoneStr == null || zoneStr.isEmpty()) {
+        stationsList = stationDAO.findAll();
+    } else {
+        try {
+            Integer zone = Integer.parseInt(zoneStr);
+            stationsList = stationDAO.findByZone(zone);
+        } catch (Exception ex) {
+            errorMessage = ex.getMessage();
+        }
+    }
+    // basic error checking before making a call
+    if (actionStr == null || actionStr.isEmpty()) {
+        // do nothing
+    } else if ("XXX".equals(actionStr)) {
+        // put your actions here
+    } else {
+        errorMessage = "ERROR: page called for unknown action";
+    }
     
-    String fileName = "target/priceCalculatorDAOJaxbImplFile.xml";
-    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);
     
+        
+    
+    
+    // Setting up Date/Time values
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.setTime(new Date());
-    newCalendar.add(Calendar.HOUR_OF_DAY, 24);
-    String validToTimeStr = newCalendar.getTime().toString();
+    newCalendar.add(Calendar.HOUR_OF_DAY, 4);
+    String currentTime = new Date().toString();
+    String validUntill = newCalendar.getTime().toString();
     
-    String ticketStr = request.getParameter("ticketStr");
+    String ticket = request.getParameter("ticketStr");
     
+    // Getting the Price and Rate
+    String fileName = "target/priceCalculatorDAOJaxbImplFile.xml";
+    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);
     Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
     
-    Ticket ticket = new Ticket();
-    ticket.setCost(pricePerZone);
-    ticket.setStartStation(startStationStr);
-    ticket.setIssueDate(new Date());
-    ticket.setRate(rate);
-    ticket.setEndStation(endStationStr);;
-    String encodedTicketStr = TicketEncoderImpl.encodeTicket(ticket);
-    ticketStr = encodedTicketStr;
+    // Setting up a new Ticket
+    Ticket newTicket = new Ticket();
+    newTicket.setCost(pricePerZone);
+    newTicket.setStartStation(startStation);
+    newTicket.setIssueDate(new Date());
+    newTicket.setRate(rate);
+    newTicket.setEndStation(endStation);;
+    String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
+    ticket = encodedTicket;
+    
+
+    
+
+
 %>
 <!DOCTYPE html>
 <html>
@@ -59,45 +105,45 @@
         <title>Manage gate Locks</title>
     </head>
     <body>
-        <h1>Generate a New Ticket</h1>
-        <!-- print error message if there is one -->
+        <h1>Create a New Ticket</h1>
+        
         <div style="color:red;"><%=errorMessage%></div>
 
         <form action="./ticketMachine.jsp"  method="post">
             <table>
                 <tr>
                     <td>Start Zones:</td>
-                    <td><input type="text" name="zoneStart" value="<%=startZoneStr%>"></td>
+                    <td><input type="text" name="startZone" value="<%=startZone%>"></td>
                 </tr>
                 <tr>
                     <td>Starting Station:</td>
-                    <td><input type="text" name="startStation" value="<%=startStationStr%>"></td>
+                    <td><input type="text" name="startStation" value="<%=startStation%>"></td>
                 </tr>
                 <tr>
-                    <td>End Zone:</td>
-                    <td><input type="text" name="zoneEnd" value="<%=endZoneStr%>"></td>
+                    <td>Destination Zone:</td>
+                    <td><input type="text" name="endZone" value="<%=endZone%>"></td>                <!-- ask ethan-->
                 </tr>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStationStr%>"></td>
+                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>
                 </tr>
                 <tr>
                     <td>Valid From Time:</td>
                     <td>
-                        <p><%=currentTimeStr%></p>
+                        <p><%=currentTime%></p>
                     </td>
                 </tr>
                 <tr>
-                    <td>Valid To Time:</td>
+                    <td>Valid Untill:</td>
                     <td>
-                        <p><%=validToTimeStr%></p>
+                        <p><%=validUntill%></p>
                     </td>
                 </tr>
             </table>
             <button type="submit" >Create Ticket</button>
         </form> 
-        <h1>generated ticket XML</h1>
-        <textarea id="ticketTextArea" rows="14" cols="120"><%=ticketStr%></textarea>
+        <h1>Generated ticket XML</h1>
+        <textarea id="ticketTextArea" rows="14" cols="120"><%=ticket%></textarea>
 
     </body>
 </html>

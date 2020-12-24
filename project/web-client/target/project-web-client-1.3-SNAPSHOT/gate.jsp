@@ -1,6 +1,6 @@
 <%-- 
     Document   : gate
-    Created on : 20 Dec 2020, 16:20:34
+    Created on : 13 Dec 2020, 16:20:34
     Author     : Cristiano Local
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,29 +13,22 @@
 <%@page import="java.text.DateFormat"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
-<%--<%@page import="solent.ac.uk.com504.examples.ticketgate.model.util.DateTimeAdapter"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.service.GateEntryServiceImpl"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.service.GateManagementServiceImpl"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.service.ServiceFactoryImpl"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.model.service.GateEntryService"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.model.service.GateManagementService"%>
-<%@page import="solent.ac.uk.com504.examples.ticketgate.model.dto.Ticket"%>--%>
 <%@page import="javax.xml.bind.JAXBContext"%>
 <%@page import="java.io.StringWriter"%>
 <%@page import="javax.xml.bind.Marshaller"%>
 
 <%
-    String errorMessage = "";
-    Date currentTime = new Date();
+    String errorMessage = "";    
     String ticketStr = request.getParameter("ticketStr");
     boolean openGate = false;
     response.setIntHeader("Refresh", 20);
-    Date issueDate = null;
-    String destinationStation = null;
-    boolean validDateTime = false;
+    Date currentTime = new Date();    
+    Date issueDate = null;    
+    boolean validUntill = false;
     boolean validFormat = false;
+    String destinationStation = null;
     boolean validStation = false;
-    String endStationStr = request.getParameter("endStation");
+    String endStation = request.getParameter("endStation");
 
     if (ticketStr != null) {
         try {
@@ -52,8 +45,8 @@
     try {
         Calendar newCalendar = Calendar.getInstance();
         newCalendar.setTime(issueDate);
-        newCalendar.add(Calendar.HOUR_OF_DAY, 24);
-        validDateTime = currentTime.before(newCalendar.getTime());
+        newCalendar.add(Calendar.HOUR_OF_DAY, 4);
+        validUntill = currentTime.before(newCalendar.getTime());
     } catch (Exception e) {
     }
 
@@ -61,16 +54,16 @@
 
     try {
 
-        validStation = endStationStr.equals(destinationStation);
+        validStation = endStation.equals(destinationStation);
 
     } catch (Exception e) {
     }
-    boolean valid;
+    boolean validTicket;
     
     if (TicketEncoderImpl.validateTicket(ticketStr)) {
-        valid = true;
+        validTicket = true;
     } else {
-        valid = false ;
+        validTicket = false ;
     }
 %>
 <!DOCTYPE html>
@@ -93,7 +86,7 @@
                 <tr>
                     <td>Valid Date</td>
                     <td>
-                        <p><%=validDateTime%></p>
+                        <p><%=validUntill%></p>
                     </td>
                 </tr>
                 <tr>
@@ -108,7 +101,7 @@
             <table>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStationStr%>"></td>
+                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>
                 </tr>
                 <tr>
                     <td>Current Time</td>
@@ -124,11 +117,11 @@
             <button type="submit" >Open Gate</button>
         </form> 
         <BR>
-        <% if (valid) { %>
+        <% if (validTicket) { %>
         <%  openGate = true;%>
-        <div style="color:green;font-size:x-large">Valid Ticket, Gate Opening</div>
+        <div style="color:green;font-size:x-large">Valid Ticket, Gate Opening</div>                 <!--find a way of hiding this untill the user checks the ticket XML-->
         <%  } else {  %>
-        <div style="color:red;font-size:x-large">Invalid Ticket, Gate will remain Closed</div>
+        <div style="color:red;font-size:x-large">Invalid Ticket, Gate will remain Closed</div>      <!--find a way of hiding this untill the user checks the ticket XML-->
         <% }%>
     </body>
 </html>
