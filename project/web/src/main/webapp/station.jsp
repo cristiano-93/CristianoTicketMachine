@@ -131,9 +131,9 @@
             ticketMachine.setStation(station);
             station.addTicketMachine(ticketMachine);
             
-    
+
             // TODO  - do stuff to add ticket machine
-            //errorMessage = "add ticket machine not implemented";
+            errorMessage = "add ticket machine not implemented";
         }
 
     } else {
@@ -150,11 +150,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Station List</title>
+        <title>Station creation JSP</title>
     </head>
     <body>
 
-        <H1>Station <%=stationName%></H1>
+        <H1>Station : <%=stationName%></H1>
         <!-- print error message if there is one -->
         <div style="color:red;"><%=errorMessage%></div>
         <div style="color:green;"><%=message%></div>
@@ -194,10 +194,14 @@
             }
         %>
         <br>
-        <form action="./station.jsp" method="get">
+        <form action="./addMachine.jsp" method="get">
             <input type="hidden" name="action" value="addTicketMachine">
             <input type="hidden" name="stationName" value="<%=station.getName()%>">
             <button type="submit" >add ticket machine to station</button>
         </form> 
+
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
     </body>
 </html>

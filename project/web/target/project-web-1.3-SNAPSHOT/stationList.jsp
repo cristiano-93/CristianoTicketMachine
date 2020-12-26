@@ -104,6 +104,10 @@
         <form action="./stationList.jsp" method="get">
             <button type="submit" >Show All Zones</button>
         </form> 
+        
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
 
         <%
             for (Integer selectZone : zones) {
