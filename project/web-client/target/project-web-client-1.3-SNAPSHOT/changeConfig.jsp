@@ -77,6 +77,9 @@
                 </tr>
             </form>
         </table> 
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
 
     </body>
 </html>

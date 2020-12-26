@@ -18,12 +18,12 @@
 <%@page import="javax.xml.bind.Marshaller"%>
 
 <%
-    String errorMessage = "";    
+    String errorMessage = "";
     String ticketStr = request.getParameter("ticketStr");
     boolean openGate = false;
     response.setIntHeader("Refresh", 20);
-    Date currentTime = new Date();    
-    Date issueDate = null;    
+    Date currentTime = new Date();
+    Date issueDate = null;
     boolean validUntill = false;
     boolean validFormat = false;
     String destinationStation = null;
@@ -59,18 +59,18 @@
     } catch (Exception e) {
     }
     boolean validTicket;
-    
+
     if (TicketEncoderImpl.validateTicket(ticketStr)) {
         validTicket = true;
     } else {
-        validTicket = false ;
+        validTicket = false;
     }
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Open gate</title>
+        <title>Gate Lock System</title>
     </head>
     <body>
         <h1>Open Gate with Ticket</h1>        
@@ -97,7 +97,7 @@
                 </tr>
             </table>
         </form> 
-        <form action="./ticketGate.jsp"  method="post" >
+        <form action="./gate.jsp"  method="post" >
             <table>
                 <tr>
                     <td>Ending Station:</td>
@@ -115,7 +115,11 @@
                 </tr>
             </table>
             <button type="submit" >Open Gate</button>
-        </form> 
+        </form>
+
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
         <BR>
         <% if (validTicket) { %>
         <%  openGate = true;%>

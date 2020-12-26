@@ -23,20 +23,20 @@
 <%@page import="java.io.StringWriter"%>
 <%@page import="javax.xml.bind.Marshaller"%>
 
-<%    
+<%
     // Setting up Zones/Stations values
     String validFrom = request.getParameter("validFrom");
-    String validTo = request.getParameter("validTo"); 
-    String startStation = request.getParameter("startStation");     
-    String startZone = request.getParameter("startZone");          
-    String endZone = request.getParameter("endZone");    
+    String validTo = request.getParameter("validTo");
+    String startStation = request.getParameter("startStation");
+    String startZone = request.getParameter("startZone");
+    String endZone = request.getParameter("endZone");
     String endStation = request.getParameter("endStation");
     String destination = request.getParameter("destinationStation");
-    
+
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     String startStationName = WebClientObjectFactory.getStationName();
     Integer startStationZone = WebClientObjectFactory.getStationZone();
-    
+
     //Service
     String errorMessage = "";
     StationDAO stationDAO = serviceFacade.getStationDAO();
@@ -63,26 +63,22 @@
     } else {
         errorMessage = "ERROR: page called for unknown action";
     }
-    
-    
-        
-    
-    
+
     // Setting up Date/Time values
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.setTime(new Date());
     newCalendar.add(Calendar.HOUR_OF_DAY, 4);
     String currentTime = new Date().toString();
     String validUntill = newCalendar.getTime().toString();
-    
+
     String ticket = request.getParameter("ticketStr");
-    
+
     // Getting the Price and Rate
     String fileName = "target/priceCalculatorDAOJaxbImplFile.xml";
     PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);
     Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
-    
+
     // Setting up a new Ticket
     Ticket newTicket = new Ticket();
     newTicket.setCost(pricePerZone);
@@ -92,9 +88,6 @@
     newTicket.setEndStation(endStation);;
     String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
     ticket = encodedTicket;
-    
-
-    
 
 
 %>
@@ -102,17 +95,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Manage gate Locks</title>
+        <title>Ticket Machine</title>
     </head>
     <body>
         <h1>Create a New Ticket</h1>
-        
+
         <div style="color:red;"><%=errorMessage%></div>
 
         <form action="./ticketMachine.jsp"  method="post">
             <table>
                 <tr>
-                    <td>Start Zones:</td>
+                    <td>Start Zone:</td>
                     <td><input type="text" name="startZone" value="<%=startZone%>"></td>
                 </tr>
                 <tr>
@@ -128,7 +121,7 @@
                     <td><input type="text" name="endStation" value="<%=endStation%>"></td>
                 </tr>
                 <tr>
-                    <td>Valid From Time:</td>
+                    <td>Issued on:</td>
                     <td>
                         <p><%=currentTime%></p>
                     </td>
@@ -142,6 +135,10 @@
             </table>
             <button type="submit" >Create Ticket</button>
         </form> 
+                    
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
         <h1>Generated ticket XML</h1>
         <textarea id="ticketTextArea" rows="14" cols="120"><%=ticket%></textarea>
 

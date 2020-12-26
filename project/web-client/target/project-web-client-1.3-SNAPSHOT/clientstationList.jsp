@@ -73,17 +73,21 @@
             for (Integer selectZone : zones) {
         %>
         <form action="./clientstationList.jsp" method="get">
-            <input type="hidden" name="zone" value="<%= selectZone %>">
-            <button type="submit" >Zone&nbsp;<%= selectZone %></button>
+            <input type="hidden" name="zone" value="<%= selectZone%>">
+            <button type="submit" >Zone&nbsp;<%= selectZone%></button>
         </form> 
+
         <%
             }
         %>
+        <form action="index.html">
+            <input type="submit" value="Return to index page" />
+        </form>
         <p>Stations in <%= (zoneStr == null) ? "All Zones" : "Zone" + zoneStr%></p>
         <%
             for (Station station : stationList) {
         %>
-        <p><%=station %></p>
+        <p><%=station%></p>
         <%
             }
         %>
