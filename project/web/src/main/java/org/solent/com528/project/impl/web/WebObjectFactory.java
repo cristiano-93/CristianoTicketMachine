@@ -30,8 +30,9 @@ import org.solent.com528.project.model.service.ServiceObjectFactory;
 /**
  * ServletContextListeneer executes code on web app startup and shutdown
  * https://www.deadcoderising.com/execute-code-on-webapp-startup-and-shutdown-using-servletcontextlistener/
- * https://blog.georgovassilis.com/2014/01/15/tomcat-spring-and-memory-leaks-when-undeploying-or-redeploying-an-web-application/ Tomcat, Spring and memory leaks
- * when undeploying or redeploying an web application
+ * https://blog.georgovassilis.com/2014/01/15/tomcat-spring-and-memory-leaks-when-undeploying-or-redeploying-an-web-application/
+ * Tomcat, Spring and memory leaks when undeploying or redeploying an web
+ * application
  *
  * @author gallenc
  */
@@ -62,8 +63,11 @@ public class WebObjectFactory implements ServletContextListener {
                     serviceFacade = serviceObjectFactory.getServiceFacade();
 
                     StationDAO stationDAO = serviceFacade.getStationDAO();
-                    List<Station> stationList = loadDefaultStations();
-                    stationDAO.saveAll(stationList);
+                    // if no stations in database, populated with london list
+                    if (stationDAO.findAll().isEmpty()) {
+                        List<Station> stationList = loadDefaultStations();
+                        stationDAO.saveAll(stationList);
+                    }
                 }
             }
         }

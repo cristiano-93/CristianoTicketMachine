@@ -3,6 +3,9 @@
     Created on : 26 Dec 2020, 18:24:28
     Author     : Cristiano Local
 --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="org.solent.com528.project.model.dao.TicketMachineDAO"%>
+<%@page import="java.util.List"%>
 <%@page import="org.solent.com528.project.model.dto.TicketMachine"%>
 <%@page import="org.solent.com528.project.model.dto.Station"%>
 <%@page import="org.solent.com528.project.impl.web.WebObjectFactory"%>
@@ -22,14 +25,34 @@
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
+    TicketMachineDAO ticketMachineDao = null;
     
     // accessing request parameters
     String actionStr = request.getParameter("action");
     String stationName = request.getParameter("stationName");
     
+    // variables
+    Long updateMachineId = null;
+    StationDAO stationDao = null;
     Station station = null;
     
-    TicketMachine ticketMachine = new TicketMachine();
+    List<TicketMachine> ticketMachineList = new ArrayList<TicketMachine>();
+
+     for (Integer i = 0; i < 10; i++) {
+            TicketMachine t = new TicketMachine();
+            t.setId(updateMachineId);
+            t.setStation(station);
+            t = ticketMachineDao.save(t);
+            ticketMachineList.add(t);
+        }
+     
+     
+//  create one ticket machine per station
+        for(Station station: stationList){
+            dummyStation = stationDao.save(dummyStation);
+            TicketMachine exampleTicketMachine = new TicketMachine();
+            exampleTicketMachine.setStation(dummyStation);
+            ticketMachineDao.save(exampleTicketMachine);
     
 // basic error checking before making a call
     if (actionStr == null || actionStr.isEmpty()) {};
@@ -84,13 +107,13 @@
         <h1>Generating a new ticket machine for station : <%=stationName%></h1>
         
         <form action="./station.jsp" method="get">
-            <p>Machine ID: <input type="text" size="36" name="updateMachineId" value="<%=ticketMachine.getId()%>">
+            <p>Machine ID: <input type="text" size="36" name="updateMachineId" value="">
                 <button type="submit" >Update Machine ID</button>
             </p>
         </form>
         
         
-        <p>List of all Machines: </p>
+        <p>List of all Machines: <%=ticketMachineList%></p>
         
         
         <form action="./stationList.jsp" method="get">
