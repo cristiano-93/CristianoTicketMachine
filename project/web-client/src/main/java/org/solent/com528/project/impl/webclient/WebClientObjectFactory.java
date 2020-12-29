@@ -41,6 +41,14 @@ public class WebClientObjectFactory implements ServletContextListener {
         LOG.debug("setting ticketMachineUuid=" + ticketMachineUuid);
         configurationPoller.setTicketMachineUuid(ticketMachineUuid);
     }
+    
+    public static void setStationName(String stationName) {
+        configurationPoller.setStationName(stationName);
+    }
+    
+    public static void setStationZone(int stationZone) {
+        configurationPoller.setStationZone(stationZone);
+    }
 
     public static String getStationName() {
         return configurationPoller.getStationName();

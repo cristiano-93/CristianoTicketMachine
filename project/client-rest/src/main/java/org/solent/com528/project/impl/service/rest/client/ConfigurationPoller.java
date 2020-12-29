@@ -58,6 +58,13 @@ public class ConfigurationPoller {
     public Integer getStationZone() {
         return stationZone;
     }
+        public void setStationName(String stationName) {
+        this.stationName = stationName;
+    }
+
+    public void setStationZone(Integer stationZone) {
+        this.stationZone = stationZone;
+    }
 
     public String getTicketMachineUuid() {
         return ticketMachineUuid;

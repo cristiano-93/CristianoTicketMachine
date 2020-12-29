@@ -1,8 +1,9 @@
 <%-- 
     Document   : changeConfig
-    Created on : 16 Dec 2020, 00:39:54
-    Author     : cgallen
+    Created on : 29 Dec 2020, 15:16:04
+    Author     : Cristiano Local
 --%>
+
 
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,18 +14,14 @@
     // used to place error message at top of page 
     String errorMessage = "";
     String message = "";
-
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
-
     // accessing request parameters
     String actionStr = request.getParameter("action");
     String updateUuidStr = request.getParameter("updateUuid");
-
     if ("changeTicketMachineUuid".equals(actionStr)) {
         WebClientObjectFactory.setTicketMachineUuid(updateUuidStr);
     }
-
     String stationName = WebClientObjectFactory.getStationName();
     Integer stationZone = WebClientObjectFactory.getStationZone();
     String ticketMachineUuid = WebClientObjectFactory.getTicketMachineUuid();

@@ -3,6 +3,13 @@
     Created on : 13 Dec 2020, 16:20:34
     Author     : Cristiano Local
 --%>
+<%@page import="java.util.Set"%>
+<%@page import="org.solent.com528.project.impl.webclient.WebClientObjectFactory"%>
+<%@page import="org.solent.com528.project.model.service.ServiceFacade"%>
+<%@page import="org.solent.com528.project.model.dao.StationDAO"%>
+<%@page import="org.solent.com528.project.model.dto.Station"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@page import="java.util.Calendar"%>
@@ -29,7 +36,24 @@
     String destinationStation = null;
     boolean validStation = false;
     String endStation = request.getParameter("endStation");
+    
+    ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
+    StationDAO stationDAO = serviceFacade.getStationDAO();
+    Set<Integer> zones = stationDAO.getAllZones();
+    List<Station> stationsList = new ArrayList<Station>();
+    String zoneStr = request.getParameter("zone");
 
+    if (zoneStr == null || zoneStr.isEmpty()) {
+        stationsList = stationDAO.findAll();
+    } else {
+        try {
+            Integer zone = Integer.parseInt(zoneStr);
+            stationsList = stationDAO.findByZone(zone);
+        } catch (Exception ex) {
+            errorMessage = ex.getMessage();
+        }
+    }
+    
     if (ticketStr != null) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("org.solent.com528.project.model.dto");
@@ -58,13 +82,6 @@
 
     } catch (Exception e) {
     }
-    boolean validTicket;
-
-    if (TicketEncoderImpl.validateTicket(ticketStr)) {
-        validTicket = true;
-    } else {
-        validTicket = false;
-    }
 %>
 <!DOCTYPE html>
 <html>
@@ -74,7 +91,7 @@
     </head>
     <body>
         <h1>Open Gate with Ticket</h1>        
-        <div style="color:red;"><%=errorMessage%></div> <!--error message-->
+        <div style="color:red;"><%=errorMessage%></div> 
         <form>
             <table>
                 <tr>
@@ -99,10 +116,17 @@
         </form> 
         <form action="./gate.jsp"  method="post" >
             <table>
-                <tr>
-                    <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>
-                </tr>
+                <td>End Station: </td>
+                <td>                        
+                        <select name="endStation" id="endStation">	
+                            <%
+                                for (Station station : stationsList) {
+                            %>	
+                            <option value="<%=station.getName()%>"><%=station.getName()%></option>	
+                            <%
+                                }
+                            %>                        
+                </td>
                 <tr>
                     <td>Current Time</td>
                     <td>
@@ -121,7 +145,7 @@
             <input type="submit" value="Return to index page" />
         </form>
         <BR>
-        <% if (validTicket) { %>
+        <% if (validFormat) { %>
         <%  openGate = true;%>
         <div style="color:green;font-size:x-large">Valid Ticket, Gate Opening</div>                 <!--find a way of hiding this untill the user checks the ticket XML-->
         <%  } else {  %>

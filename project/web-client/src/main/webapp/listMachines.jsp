@@ -14,6 +14,8 @@
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     
     String ticketMachineUuid = WebClientObjectFactory.getTicketMachineUuid();
+    String stationName = WebClientObjectFactory.getStationName();
+    int stationZone = WebClientObjectFactory.getStationZone();
     
 
 %>
@@ -26,7 +28,10 @@
         <title>Ticket machines list</title>
     </head>
     <body>
-        <h1><%=ticketMachineUuid%></h1>
+        <p>Machine Uuid: <%=ticketMachineUuid%></p>
+        <p>Station: <%=stationName%></p>
+        <p>Station Zone: <%=stationZone%></p>
+        
         
         <form action="index.html">
             <input type="submit" value="Return to index page" />
