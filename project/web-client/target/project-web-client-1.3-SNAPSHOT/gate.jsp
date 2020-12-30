@@ -27,33 +27,24 @@
 <%
     String errorMessage = "";
     String ticketStr = request.getParameter("ticketStr");
-    boolean openGate = false;
-    response.setIntHeader("Refresh", 20);
+    response.setIntHeader("Refresh", 60);
     Date currentTime = new Date();
     Date issueDate = null;
-    boolean validUntill = false;
+    String destinationStation="";
+    String endStation = request.getParameter("endStation");    
+    
+    
+    boolean validTime = false;
     boolean validFormat = false;
-    String destinationStation = null;
-    boolean validStation = false;
-    String endStation = request.getParameter("endStation");
+    boolean validStation = true;
+    boolean openGate = false;
     
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
-    Set<Integer> zones = stationDAO.getAllZones();
-    List<Station> stationsList = new ArrayList<Station>();
-    String zoneStr = request.getParameter("zone");
-
-    if (zoneStr == null || zoneStr.isEmpty()) {
-        stationsList = stationDAO.findAll();
-    } else {
-        try {
-            Integer zone = Integer.parseInt(zoneStr);
-            stationsList = stationDAO.findByZone(zone);
-        } catch (Exception ex) {
-            errorMessage = ex.getMessage();
-        }
-    }
+    List<Station> stationsList = new ArrayList<Station>();      
+    stationsList = stationDAO.findAll();
     
+    //validating ticket XML data
     if (ticketStr != null) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("org.solent.com528.project.model.dto");
@@ -66,22 +57,34 @@
         }
     }
 
+    // setting up date to check if ticket time within valid 4 hours
     try {
         Calendar newCalendar = Calendar.getInstance();
         newCalendar.setTime(issueDate);
         newCalendar.add(Calendar.HOUR_OF_DAY, 4);
-        validUntill = currentTime.before(newCalendar.getTime());
+        validTime = currentTime.before(newCalendar.getTime());
     } catch (Exception e) {
     }
 
+    // checking if ticket is valid and opening gate
     validFormat = TicketEncoderImpl.validateTicket(ticketStr);
 
-    try {
-
-        validStation = endStation.equals(destinationStation);
-
-    } catch (Exception e) {
+    if(endStation == destinationStation){
+        validStation = true;
+    } 
+    else if(endStation != destinationStation){
+        errorMessage ="Select the end station and make sure its the same as the ticket";   
+        validStation = false;
     }
+    
+    if(validFormat && validStation && validTime){
+        openGate = true;
+    }
+    else {
+        openGate = false;
+    }
+    
+
 %>
 <!DOCTYPE html>
 <html>
@@ -103,7 +106,7 @@
                 <tr>
                     <td>Valid Date</td>
                     <td>
-                        <p><%=validUntill%></p>
+                        <p><%=validTime%></p>
                     </td>
                 </tr>
                 <tr>
@@ -116,21 +119,24 @@
         </form> 
         <form action="./gate.jsp"  method="post" >
             <table>
-                <td>End Station: </td>
-                <td>                        
-                        <select name="endStation" id="endStation">	
+                <tr>
+                    <td>Ending Station:</td>
+                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>                    
+                </tr>
+                <tr>Stations List                       
+                        <select name="stationSelect" id="stationSelect">	
                             <%
                                 for (Station station : stationsList) {
                             %>	
                             <option value="<%=station.getName()%>"><%=station.getName()%></option>	
                             <%
                                 }
-                            %>                        
-                </td>
+                            %>     
+                </tr>
                 <tr>
                     <td>Current Time</td>
                     <td>
-                        <p><%= currentTime.toString()%> (auto refreshing every 20 seconds)</p>
+                        <p><%= currentTime.toString()%> (auto refreshing every 60 seconds)</p>
                     </td>
                 </tr>
                 <tr>
@@ -145,8 +151,8 @@
             <input type="submit" value="Return to index page" />
         </form>
         <BR>
-        <% if (validFormat) { %>
-        <%  openGate = true;%>
+        <% if (openGate) { %>
+        <% %>
         <div style="color:green;font-size:x-large">Valid Ticket, Gate Opening</div>                 <!--find a way of hiding this untill the user checks the ticket XML-->
         <%  } else {  %>
         <div style="color:red;font-size:x-large">Invalid Ticket, Gate will remain Closed</div>      <!--find a way of hiding this untill the user checks the ticket XML-->

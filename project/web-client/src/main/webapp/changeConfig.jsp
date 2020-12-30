@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="org.solent.com528.project.model.dao.TicketMachineDAO"%>
 <%@page import="java.util.Date"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="org.solent.com528.project.impl.webclient.WebClientObjectFactory"%>
@@ -21,6 +22,7 @@
     String updateUuidStr = request.getParameter("updateUuid");
     if ("changeTicketMachineUuid".equals(actionStr)) {
         WebClientObjectFactory.setTicketMachineUuid(updateUuidStr);
+        TicketMachineDAO.
     }
     String stationName = WebClientObjectFactory.getStationName();
     Integer stationZone = WebClientObjectFactory.getStationZone();

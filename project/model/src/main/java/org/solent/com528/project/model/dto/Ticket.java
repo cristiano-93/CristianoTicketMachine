@@ -30,6 +30,7 @@ public class Ticket {
     private Rate rate;
 
     private Date issueDate;
+    
 
     public String getStartStation() {
         return startStation;

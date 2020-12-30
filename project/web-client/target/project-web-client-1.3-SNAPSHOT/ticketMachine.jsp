@@ -30,28 +30,22 @@
     String validFrom = request.getParameter("validFrom");
     String validTo = request.getParameter("validTo");
     String startStation = request.getParameter("startStation");
-    String startZone = request.getParameter("startZone");
-    String endZone = request.getParameter("endZone");
     String endStation = request.getParameter("endStation");
-    String destination = request.getParameter("destinationStation");
-    String creditCard = request.getParameter("creditCard");
-
-    boolean validCard = false;
+    //String creditCard = request.getParameter("creditCard");
+    String errorMessage = "";
 
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     String startStationName = WebClientObjectFactory.getStationName();
     Integer startStationZone = WebClientObjectFactory.getStationZone();
-    PaymentCalculator payCalculator = new PaymentCalculator();
 
     //Service
-    String errorMessage = "";
+    
     StationDAO stationDAO = serviceFacade.getStationDAO();
     Set<Integer> zones = stationDAO.getAllZones();
-    List<Station> stationsList = new ArrayList<Station>();
-    String actionStr = request.getParameter("action");
-    String zoneStr = request.getParameter("zone");
-    
+    List<Station> stationsList = new ArrayList<Station>();    
     stationsList = stationDAO.findAll();
+    
+    String actionStr = request.getParameter("action");
     
 //    if (zoneStr.isEmpty()) {
 //        stationsList = stationDAO.findAll();
@@ -72,14 +66,14 @@
         errorMessage = "ERROR: page called for unknown action";
     }
 
-    // checking if card number is valid
-    try {
-        long cardNumber = Long.parseLong(creditCard, 10);
-        validCard = PaymentCalculator.validNumber(cardNumber);
-    } catch (Exception e) {
-        errorMessage += e + " check the card number";
-    }
-
+    // checking if card number is valid --not working
+    
+//    if(creditCard.length() == 16){
+//        validCard = true;
+//    }
+//    else {
+//        errorMessage = "INVALID CARD NUMBER, card must be 16 digits";
+//    }
     // Setting up Date/Time values
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.setTime(new Date());
@@ -97,18 +91,18 @@
 
     // Setting up a new Ticket
      
-    if(endStation == startStation){
+    if(endStation != startStation){
             Ticket newTicket = new Ticket();
             newTicket.setCost(pricePerZone);
+            newTicket.setRate(rate);
             newTicket.setStartStation(startStation);
             newTicket.setEndStation(endStation);
-            newTicket.setIssueDate(new Date());
-            newTicket.setRate(rate);   
+            newTicket.setIssueDate(new Date());               
 
             String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
             ticket = encodedTicket;
     }
-    else if(endStation != startStation){
+    else if(endStation == startStation){
         errorMessage = "start station cannot be the same as the destination station";
     }
   
@@ -128,7 +122,7 @@
             <table>
                 <tr>
                     <td>Starting Station:</td>
-                    <td><input type="text" name="startStation" value="_"></td>
+                    <td><input type="text" name="startStation" value="<%=startStation%>"></td>
                     <td>Stations List                       
                         <select name="stationSelect" id="stationSelect">	
                             <%
@@ -142,11 +136,11 @@
                 </tr>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="-"></td>         
+                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>         
                 <tr>
                     <td>Credit Card:</td>
                     <td>
-                        <input type="text" name="creditCard" value="">
+                        <input type="text" name="creditCard" value="1234567890123456">
                        
                     </td>
                 </tr>
