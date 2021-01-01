@@ -26,16 +26,8 @@
 <!DOCTYPE html>
 <%
     // Setting up variables
-    String validFrom = request.getParameter("validFrom");
-    String validTo = request.getParameter("validTo");
     String startStation = request.getParameter("startStation");
-    if(startStation.isEmpty()){
-        startStation = "Abbey Road";
-    }
     String endStation = request.getParameter("endStation");
-    if(endStation.isEmpty()){
-        endStation = "Croxley";
-    }
     String creditCard = request.getParameter("creditCard");
     int cardInt = 0;
     //cardInt = Integer.parseInt(creditCard);
@@ -93,20 +85,20 @@
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
 
     //calculating the ticket price   
-    Station station1 = new Station();
-    Station station2 = new Station();
-    
-    station1 = stationDAO.findByName(startStation);   
-    station2 = stationDAO.findByName(endStation);
-    double zone1;
-    double zone2;
-
-    zone1 = station1.getZone();
-    zone2 = station2.getZone();
-
-    double price = zone2 - zone1 + 1;
-    Math.abs(price);
-    double totalPrice = price * pricePerZone;
+//    Station station1 = new Station();
+//    Station station2 = new Station();
+//    
+//    station1 = stationDAO.findByName(startStation);   
+//    station2 = stationDAO.findByName(endStation);
+//    double zone1;
+//    double zone2;
+//
+//    zone1 = station1.getZone();
+//    zone2 = station2.getZone();
+//
+//    double price = zone2 - zone1 + 1;
+//    Math.abs(price);
+//    double totalPrice = price * pricePerZone;
 
 //    if (price < 0) {
 //        price = price - (price * 2);
@@ -135,7 +127,7 @@
     // Setting up a new Ticket
     if (endStation != startStation) {
         Ticket newTicket = new Ticket();
-        newTicket.setCost(totalPrice);
+        newTicket.setCost(pricePerZone);
         newTicket.setRate(rate);
         newTicket.setStartStation(startStation);
         newTicket.setEndStation(endStation);
@@ -201,9 +193,6 @@
             </table>
             <button type="submit" >Create Ticket</button>
         </form> 
-        <form action="./ticketMachine.jsp"  method="post">
-            <input type="submit" value="calculate price" />
-        </form>
 
         <form action="index.html">
             <input type="submit" value="Return to index page" />

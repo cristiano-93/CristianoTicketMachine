@@ -27,30 +27,36 @@
 <%
     String errorMessage = "";
     String ticketStr = request.getParameter("ticketStr");
+    String endStation = request.getParameter("endStation");
+    String date = request.getParameter("date");
     response.setIntHeader("Refresh", 60);
     Date currentTime = new Date();
     Date issueDate = null;
-    String destinationStation="";
-    String endStation = request.getParameter("endStation");    
-    
-    
+    String destinationStation = "";
+
     boolean validTime = false;
     boolean validFormat = false;
     boolean validStation = true;
     boolean openGate = false;
-    
+
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
-    List<Station> stationsList = new ArrayList<Station>();      
+    List<Station> stationsList = new ArrayList<Station>();
     stationsList = stationDAO.findAll();
-    
+
     //validating ticket XML data
     if (ticketStr != null) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance("org.solent.com528.project.model.dto");
             Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
             Ticket ticket = (Ticket) jaxbUnMarshaller.unmarshal(new StringReader(ticketStr));
-            issueDate = ticket.getIssueDate();
+
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            Date parsed = df.parse(date);
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(date);
+
+            ticket.setIssueDate(parsed);
             destinationStation = ticket.getEndStation();
         } catch (Exception ex) {
             throw new IllegalArgumentException("could not marshall to Ticket ticketXML=" + ticketStr);
@@ -69,21 +75,19 @@
     // checking if ticket is valid and opening gate
     validFormat = TicketEncoderImpl.validateTicket(ticketStr);
 
-    if(endStation == destinationStation){
+    if (endStation == destinationStation) {
         validStation = true;
-    } 
-    else if(endStation != destinationStation){
-        errorMessage ="Select the end station and make sure its the same as the ticket";   
+    } else if (endStation != destinationStation) {
+        errorMessage = "Select the end station and make sure its the same as the ticket";
         validStation = false;
     }
-    
-    if(validFormat && validStation && validTime){
+
+    if (validFormat && validStation && validTime) {
         openGate = true;
-    }
-    else {
+    } else {
         openGate = false;
     }
-    
+
 
 %>
 <!DOCTYPE html>
@@ -120,29 +124,33 @@
         <form action="./gate.jsp"  method="post" >
             <table>
                 <tr>
-                    <td>Ending Station:</td>
+                    <td>Arrival Station:</td>
                     <td><input type="text" name="endStation" value="<%=endStation%>"></td>                    
                 </tr>
+                <tr>
+                    <td>Arrival Time: </td>
+                    <td><input type="date" name="date" value="hh-mm"></td>
+                </tr>
                 <tr>Stations List                       
-                        <select name="stationSelect" id="stationSelect">	
-                            <%
-                                for (Station station : stationsList) {
-                            %>	
-                            <option value="<%=station.getName()%>"><%=station.getName()%></option>	
-                            <%
-                                }
-                            %>     
-                </tr>
-                <tr>
-                    <td>Current Time</td>
-                    <td>
-                        <p><%= currentTime.toString()%> (auto refreshing every 60 seconds)</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Ticket Data:</td>
-                    <td><textarea name="ticketStr" rows="14" cols="120"><%=ticketStr%></textarea></td>
-                </tr>
+                <select name="stationSelect" id="stationSelect">	
+                    <%
+                        for (Station station : stationsList) {
+                    %>	
+                    <option value="<%=station.getName()%>"><%=station.getName()%></option>	
+                    <%
+                        }
+                    %>     
+                    </tr>
+                    <tr>
+                        <td>Current Time</td>
+                        <td>
+                            <p><%= currentTime.toString()%> (auto refreshing every 60 seconds)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ticket Data:</td>
+                        <td><textarea name="ticketStr" rows="14" cols="90"><%=ticketStr%></textarea></td>
+                    </tr>
             </table>
             <button type="submit" >Open Gate</button>
         </form>
