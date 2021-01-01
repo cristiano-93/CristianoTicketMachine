@@ -126,7 +126,7 @@ public class WebObjectFactory implements ServletContextListener {
                         new Object[]{e.getSQLState(), e.getMessage()});
                 // LOG.debug( "Derby shutdown exception", e);
             } else {
-                LOG.info("Derby shutdown failed or may not yet loaded. message: {0}", e.getMessage());
+                LOG.info("Derby shutdown failed or may not yet be loaded. message: {0}", e.getMessage());
                 LOG.debug("Derby shutdown failed", e);
             }
         } finally {

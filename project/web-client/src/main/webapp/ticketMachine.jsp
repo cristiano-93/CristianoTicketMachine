@@ -6,7 +6,6 @@
 
 <%@page import="java.util.regex.Matcher"%>
 <%@page import="java.util.regex.Pattern"%>
-<%@page import="org.solent.com528.project.model.dto.PaymentCalculator"%>
 <%@page import="org.solent.com528.project.model.dto.Station"%>
 <%@page import="java.util.*"%>
 <%@page import="org.solent.com528.project.model.dao.StationDAO"%>
@@ -30,8 +29,17 @@
     String validFrom = request.getParameter("validFrom");
     String validTo = request.getParameter("validTo");
     String startStation = request.getParameter("startStation");
+    if(startStation.isEmpty()){
+        startStation = "Abbey Road";
+    }
     String endStation = request.getParameter("endStation");
-    //String creditCard = request.getParameter("creditCard");
+    if(endStation.isEmpty()){
+        endStation = "Croxley";
+    }
+    String creditCard = request.getParameter("creditCard");
+    int cardInt = 0;
+    //cardInt = Integer.parseInt(creditCard);
+    boolean validCard = false;
     String errorMessage = "";
 
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
@@ -39,14 +47,13 @@
     Integer startStationZone = WebClientObjectFactory.getStationZone();
 
     //Service
-    
     StationDAO stationDAO = serviceFacade.getStationDAO();
     Set<Integer> zones = stationDAO.getAllZones();
-    List<Station> stationsList = new ArrayList<Station>();    
+    List<Station> stationsList = new ArrayList<Station>();
     stationsList = stationDAO.findAll();
-    
+
     String actionStr = request.getParameter("action");
-    
+
 //    if (zoneStr.isEmpty()) {
 //        stationsList = stationDAO.findAll();
 //    } else {
@@ -59,15 +66,11 @@
 //    }
     // checking for error
     if (actionStr == null || actionStr.isEmpty()) {
-    } // do nothing
-    //    } else if ("XXX".equals(actionStr)) {
-    //        // put your actions here } 
-    else {
+    } else {
         errorMessage = "ERROR: page called for unknown action";
     }
 
     // checking if card number is valid --not working
-    
 //    if(creditCard.length() == 16){
 //        validCard = true;
 //    }
@@ -89,23 +92,61 @@
     Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
 
-    // Setting up a new Ticket
-     
-    if(endStation != startStation){
-            Ticket newTicket = new Ticket();
-            newTicket.setCost(pricePerZone);
-            newTicket.setRate(rate);
-            newTicket.setStartStation(startStation);
-            newTicket.setEndStation(endStation);
-            newTicket.setIssueDate(new Date());               
+    //calculating the ticket price   
+    Station station1 = new Station();
+    Station station2 = new Station();
+    
+    station1 = stationDAO.findByName(startStation);   
+    station2 = stationDAO.findByName(endStation);
+    double zone1;
+    double zone2;
 
-            String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
-            ticket = encodedTicket;
-    }
-    else if(endStation == startStation){
+    zone1 = station1.getZone();
+    zone2 = station2.getZone();
+
+    double price = zone2 - zone1 + 1;
+    Math.abs(price);
+    double totalPrice = price * pricePerZone;
+
+//    if (price < 0) {
+//        price = price - (price * 2);
+//        totalPrice = pricePerZone * price;
+//    } else {
+//        totalPrice = pricePerZone * price;
+//    }
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//
+//        Rate rate1;
+//        Double pricePerZone;
+//
+//        Date date1 = df.parse("2020-01-01 00:00");
+//
+//        rate1 = priceCalculatorDAOJaxb.getRate(date1);
+//        assertEquals(Rate.OFFPEAK, rate1);
+//        pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(date1);
+//        assertEquals(2.50, pricePerZone, 0.0001);
+//
+//        date1 = df.parse("2020-03-01 08:25");
+//
+//        rate1 = priceCalculatorDAOJaxb.getRate(date1);
+//        assertEquals(Rate.PEAK, rate1);
+//        pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(date1);
+//        assertEquals(5.00, pricePerZone, 0.0001);
+    // Setting up a new Ticket
+    if (endStation != startStation) {
+        Ticket newTicket = new Ticket();
+        newTicket.setCost(totalPrice);
+        newTicket.setRate(rate);
+        newTicket.setStartStation(startStation);
+        newTicket.setEndStation(endStation);
+        newTicket.setIssueDate(new Date());
+
+        String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
+        ticket = encodedTicket;
+    } else if (endStation == startStation) {
         errorMessage = "start station cannot be the same as the destination station";
     }
-  
+
 %>
 <!DOCTYPE html>
 <html>
@@ -122,7 +163,7 @@
             <table>
                 <tr>
                     <td>Starting Station:</td>
-                    <td><input type="text" name="startStation" value="<%=startStation%>"></td>
+                    <td><input type="text" name="startStation" value="Abbey Road"></td>
                     <td>Stations List                       
                         <select name="stationSelect" id="stationSelect">	
                             <%
@@ -136,12 +177,13 @@
                 </tr>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>         
+                    <td><input type="text" name="endStation" value="Croxley"></td>     
+                </tr>
                 <tr>
                     <td>Credit Card:</td>
                     <td>
-                        <input type="text" name="creditCard" value="1234567890123456">
-                       
+                        <input type="text" name="creditCard" value="0">
+
                     </td>
                 </tr>
                 <tr>
@@ -159,6 +201,9 @@
             </table>
             <button type="submit" >Create Ticket</button>
         </form> 
+        <form action="./ticketMachine.jsp"  method="post">
+            <input type="submit" value="calculate price" />
+        </form>
 
         <form action="index.html">
             <input type="submit" value="Return to index page" />

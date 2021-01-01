@@ -111,6 +111,18 @@ public class TicketMachineRestService {
             priceBand3.setMinutes(30);
             priceBandList.add(priceBand3);
 
+            PriceBand priceBand4 = new PriceBand();
+            priceBand4.setRate(Rate.PEAK);
+            priceBand4.setHour(16);
+            priceBand4.setMinutes(0);
+            priceBandList.add(priceBand4);
+
+            PriceBand priceBand5 = new PriceBand();
+            priceBand5.setRate(Rate.OFFPEAK);
+            priceBand5.setHour(19);
+            priceBand5.setMinutes(0);
+            priceBandList.add(priceBand5);
+
             // STATION LIST
             
             List<Station> stationList = stationDAO.findAll();
