@@ -19,7 +19,6 @@
     // used to place error message at top of page 
     String errorMessage = "";
     String message = "";
-
     // used to set html header autoload time. This automatically refreshes the page
     // Set refresh, autoload time every 20 seconds
     // response.setIntHeader("Refresh", 20);
@@ -27,7 +26,6 @@
     ServiceFacade serviceFacade = (ServiceFacade) WebObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
     TicketMachineDAO ticketMachineDAO = serviceFacade.getTicketMachineDAO();
-
     // accessing request parameters
     String actionStr = request.getParameter("action");
     String zoneStr = request.getParameter("zone");
@@ -35,11 +33,8 @@
     String updateStationName = request.getParameter("updateStationName");
     String updateZone = request.getParameter("updateZone");
     String ticketMachineUuid = request.getParameter("ticketMachineUuid");
-
     Station station = null;
-
     List<TicketMachine> ticketMachineList = ticketMachineDAO.findByStationName(stationName);
-
     // check operations
     if ("createStation".equals(actionStr)) {
         stationName = UUID.randomUUID().toString();
@@ -50,7 +45,6 @@
         station.setZone(0);
         station = stationDAO.save(station);
         message = "new station " + station.getName() + " created. Please update station name.";
-
     } else if ("modifyStation".equals(actionStr)) {
         if (stationName == null) {
             errorMessage = "station name must be a parameter for modifyStation";
@@ -60,7 +54,6 @@
                 errorMessage = "cannot find station with name: " + stationName;
             }
         }
-
     } else if ("updateStationName".equals(actionStr)) {
         if (stationName == null) {
             errorMessage = "stationName must be a parameter for updateStationName";
@@ -69,7 +62,6 @@
             if (updateStationName == null || updateStationName.isEmpty()) {
                 errorMessage = "cannot update station with empty station name";
             } else {
-
                 if (station == null) {
                     errorMessage = "Cannot update station. Cannot find station with station name :  " + stationName;
                 } else if (stationDAO.findByName(updateStationName) != null) {
@@ -81,7 +73,6 @@
                 }
             }
         }
-
     } else if ("updateStationZone".equals(actionStr)) {
         if (stationName == null || stationName.isEmpty()) {
             errorMessage = "cannot update station zone with empty station name";
@@ -98,10 +89,8 @@
                 } catch (NullPointerException | NumberFormatException ex) {
                     errorMessage = "Cannot update station. Cannot parse zone:  " + updateZone;
                 }
-
             }
         }
-
     } else if ("removeTicketMachine".equals(actionStr)) {
         if (stationName == null) {
             errorMessage = "stationName must be a parameter for removeTicketMachine";
@@ -126,35 +115,35 @@
         } else {
             station = stationDAO.findByName(stationName);
             //new code
+            try {
             TicketMachine ticketMachine = new TicketMachine();
-            ticketMachine.setUuid(UUID.randomUUID().toString());
+            ticketMachine.setUuid(ticketMachine.getUuid());
+            ticketMachine.setId(001L);
             ticketMachine.setStation(station);
-            station.addTicketMachine(ticketMachine);
+            ticketMachineDAO.save(ticketMachine);
+            } catch (Exception e) {
+                errorMessage = "add ticket machine not implemented";
+            }
             
-
-            // TODO  - do stuff to add ticket machine
-            errorMessage = "add ticket machine not implemented";
+            
         }
-
     } else {
         errorMessage = "ERROR: page called for unknown action you must have an action query perameter";
     }
-
     // just to make sure JSP has a station to render
     if (station == null) {
         station = new Station();
     }
-
 %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Station creation JSP</title>
+        <title>Station List</title>
     </head>
     <body>
 
-        <H1>Station : <%=stationName%></H1>
+        <H1>Station <%=stationName%></H1>
         <!-- print error message if there is one -->
         <div style="color:red;"><%=errorMessage%></div>
         <div style="color:green;"><%=message%></div>
@@ -185,23 +174,20 @@
         %>
         <%= ticketMachine.getUuid()%>
         <form action="./station.jsp" method="get">
-            <input type="text" size="36" name="ticketMachineUuid" value="<%= ticketMachine.getUuid()%> readonly ">
+            <input type="text" size="36" name="ticketMachineUuid" value="<%= ticketMachine.getUuid()%>">
             <input type="hidden" name="stationName" value="<%=station.getName()%>">
-            <input type="hidden" name="action" value="removeTicketMachine">
-            <button type="submit" >remove ticket machine from station</button>
+            <input type="hidden" name="action" value="removeTicketMachine">      
+            <button type="submit" >remove ticket machine from station</button>       
         </form> 
         <%
             }
         %>
         <br>
-        <form action="./addMachine.jsp" method="get">
+        <form action="./station.jsp" method="get">
             <input type="hidden" name="action" value="addTicketMachine">
             <input type="hidden" name="stationName" value="<%=station.getName()%>">
             <button type="submit" >add ticket machine to station</button>
         </form> 
 
-        <form action="index.html">
-            <input type="submit" value="Return to index page" />
-        </form>
     </body>
 </html>

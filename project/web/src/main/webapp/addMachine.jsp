@@ -36,7 +36,8 @@
     StationDAO stationDao = null;
     Station station = null;
     
-    List<TicketMachine> ticketMachineList = new ArrayList<TicketMachine>();
+    
+    List<TicketMachine> ticketMachineList = ticketMachineDAO.findByStationName(stationName);
 
      for (Integer i = 0; i < 10; i++) {
             TicketMachine t = new TicketMachine();
@@ -48,14 +49,14 @@
      
      
 //  create one ticket machine per station
-        for(Station station: stationList){
-            dummyStation = stationDao.save(dummyStation);
-            TicketMachine exampleTicketMachine = new TicketMachine();
-            exampleTicketMachine.setStation(dummyStation);
-            ticketMachineDao.save(exampleTicketMachine);
+//        for(Station station: stationList){
+//            dummyStation = stationDao.save(dummyStation);
+//            TicketMachine exampleTicketMachine = new TicketMachine();
+//            exampleTicketMachine.setStation(dummyStation);
+//            ticketMachineDao.save(exampleTicketMachine);
     
 // basic error checking before making a call
-    if (actionStr == null || actionStr.isEmpty()) {};
+    //if (actionStr == null || actionStr.isEmpty()) {};
     
 //    public void createStationsWithTicketMachinesTest() {
 //        LOG.debug("start of createStationsWithTicketMachinesTest");

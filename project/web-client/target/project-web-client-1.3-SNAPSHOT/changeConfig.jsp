@@ -14,16 +14,15 @@
 <%
     // used to place error message at top of page 
     String errorMessage = "";
-    String message = "";
+    
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
+    
     // accessing request parameters
     String actionStr = request.getParameter("action");
     String updateUuidStr = request.getParameter("updateUuid");
-    if ("changeTicketMachineUuid".equals(actionStr)) {
-        WebClientObjectFactory.setTicketMachineUuid(updateUuidStr);
-        TicketMachineDAO.
-    }
+    String selectStation = request.getParameter("updateStationName");//not used
+
     String stationName = WebClientObjectFactory.getStationName();
     Integer stationZone = WebClientObjectFactory.getStationZone();
     String ticketMachineUuid = WebClientObjectFactory.getTicketMachineUuid();
@@ -31,6 +30,27 @@
     Date lastUpdateAttempt = WebClientObjectFactory.getLastClientUpdateAttempt();
     String lastUpdateStr = (lastUpdate==null) ? "not known" : lastUpdate.toString();
     String lastUpdateAttemptStr = (lastUpdateAttempt==null) ? "not known" : lastUpdateAttempt.toString();
+    
+    
+    
+    if ("changeTicketMachineUuid".equals(actionStr)) {
+        WebClientObjectFactory.setTicketMachineUuid(updateUuidStr);
+        
+    }
+//    else if ("changeStationName".equals(actionStr)){
+//       WebClientObjectFactory.setStationName(selectStation);
+//       stationZone = WebClientObjectFactory.getStationZone();
+//    }
+//    if (updateUuidStr.isEmpty() || updateUuidStr.isBlank()){
+//        errorMessage = "No Uuid provided";
+//    } else {
+//        WebClientObjectFactory.setTicketMachineUuid(updateUuidStr);
+//        stationName = WebClientObjectFactory.getStationName();
+//        stationZone = WebClientObjectFactory.getStationZone();
+//        machineId = WebClientObjectFactory.getTicketMachineUuid();
+//                
+//    }
+
 %>
 <!DOCTYPE html>
 <html>
@@ -53,11 +73,17 @@
                 <td><%=lastUpdateStr %></td>
                 <td></td>
             </tr>
-            <tr>
-                <td>Station Name</td>
-                <td><%=stationName%></td>
-                <td></td>
-            </tr>
+            
+            <form action="./changeConfig.jsp" method="get">
+                <tr>
+                    <td>Station Name</td>
+                    <td><input type="text" size="36" name="updateStationName" value="<%=stationName%>"></td>
+                    <td>
+                        <input type="hidden" name="action" value="changeStationName">
+                        <button type="submit" >Change Station</button>
+                    </td>
+                </tr>
+            </form>
             <tr>
                 <td>Station Zone</td>
                 <td><%=stationZone%></td>
