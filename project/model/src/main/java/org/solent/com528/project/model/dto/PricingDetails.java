@@ -14,9 +14,9 @@ import org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl;
 public class PricingDetails {
     PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb;
 
-    private Double peakPricePerZone = 0.0;
+    private Double peakPricePerZone = 2.5;
 
-    private Double offpeakPricePerZone = 0.0;
+    private Double offpeakPricePerZone = 5.0;
 
     @XmlElementWrapper(name = "priceBandList")
     @XmlElement(name = "priceBand")

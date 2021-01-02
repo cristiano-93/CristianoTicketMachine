@@ -29,7 +29,7 @@
     String ticketStr = request.getParameter("ticketStr");
     String endStation = request.getParameter("endStation");
     String date = request.getParameter("date");
-    response.setIntHeader("Refresh", 60);
+    response.setIntHeader("Refresh", 30);
     Date currentTime = new Date();
     Date issueDate = null;
     String destinationStation = "";
@@ -50,13 +50,7 @@
             JAXBContext jaxbContext = JAXBContext.newInstance("org.solent.com528.project.model.dto");
             Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
             Ticket ticket = (Ticket) jaxbUnMarshaller.unmarshal(new StringReader(ticketStr));
-
-            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-            Date parsed = df.parse(date);
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(date);
-
-            ticket.setIssueDate(parsed);
+            ticket.setIssueDate(issueDate);
             destinationStation = ticket.getEndStation();
         } catch (Exception ex) {
             throw new IllegalArgumentException("could not marshall to Ticket ticketXML=" + ticketStr);
@@ -69,7 +63,8 @@
         newCalendar.setTime(issueDate);
         newCalendar.add(Calendar.HOUR_OF_DAY, 4);
         validTime = currentTime.before(newCalendar.getTime());
-    } catch (Exception e) {
+    } catch (Exception e) 
+        errorMessage="";
     }
 
     // checking if ticket is valid and opening gate
@@ -123,14 +118,7 @@
         </form> 
         <form action="./gate.jsp"  method="post" >
             <table>
-                <tr>
-                    <td>Arrival Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>                    
-                </tr>
-                <tr>
-                    <td>Arrival Time: </td>
-                    <td><input type="date" name="date" value="hh-mm"></td>
-                </tr>
+                
                 <tr>Stations List                       
                 <select name="stationSelect" id="stationSelect">	
                     <%
@@ -144,7 +132,7 @@
                     <tr>
                         <td>Current Time</td>
                         <td>
-                            <p><%= currentTime.toString()%> (auto refreshing every 60 seconds)</p>
+                            <p><%= currentTime.toString()%> (auto refreshing every 30 seconds)</p>
                         </td>
                     </tr>
                     <tr>

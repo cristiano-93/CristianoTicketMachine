@@ -36,8 +36,8 @@ public class PriceCalculatorDAOJaxbImpl implements PriceCalculatorDAO {
 
     private final String pricingDetailsFile;
 
-    private Double offpeakPricePerZone = 0.0;
-    private Double peakPricePerZone = 0.0;
+    private Double offpeakPricePerZone = 2.5;
+    private Double peakPricePerZone = 5.0;
 
     // adds only new priceband and returns list sorted by timeInMinutes
     // TreeMap timeInMinutes, PriceBand

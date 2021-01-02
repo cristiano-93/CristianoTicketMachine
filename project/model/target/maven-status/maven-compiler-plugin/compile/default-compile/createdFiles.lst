@@ -6,7 +6,6 @@ org\solent\com528\project\model\dto\PricingDetails.class
 org\solent\com528\project\model\dto\TicketMachineConfig.class
 org\solent\com528\project\model\service\ServiceFacade.class
 org\solent\com528\project\model\dto\PriceBand.class
-org\solent\com528\project\model\dto\PaymentCalculator.class
 org\solent\com528\project\model\dto\Station.class
 org\solent\com528\project\model\dto\Rate.class
 org\solent\com528\project\impl\dao\jaxb\StationDAOJaxbImpl.class

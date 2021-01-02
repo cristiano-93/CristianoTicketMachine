@@ -28,17 +28,11 @@
     // Setting up variables
     String startStation = request.getParameter("startStation");
     String endStation = request.getParameter("endStation");
-    String creditCard = request.getParameter("creditCard");
-    int cardInt = 0;
-    //cardInt = Integer.parseInt(creditCard);
-    boolean validCard = false;
     String errorMessage = "";
 
-    ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
-    String startStationName = WebClientObjectFactory.getStationName();
-    Integer startStationZone = WebClientObjectFactory.getStationZone();
 
-    //Service
+    //Service    
+    ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
     Set<Integer> zones = stationDAO.getAllZones();
     List<Station> stationsList = new ArrayList<Station>();
@@ -62,13 +56,6 @@
         errorMessage = "ERROR: page called for unknown action";
     }
 
-    // checking if card number is valid --not working
-//    if(creditCard.length() == 16){
-//        validCard = true;
-//    }
-//    else {
-//        errorMessage = "INVALID CARD NUMBER, card must be 16 digits";
-//    }
     // Setting up Date/Time values
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.setTime(new Date());
@@ -80,50 +67,10 @@
 
     // Getting the Price and Rate
     String fileName = "target/priceCalculatorDAOJaxbImplFile.xml";
-    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);
-    Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
+    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);    
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
+    Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
 
-    //calculating the ticket price   
-//    Station station1 = new Station();
-//    Station station2 = new Station();
-//    
-//    station1 = stationDAO.findByName(startStation);   
-//    station2 = stationDAO.findByName(endStation);
-//    double zone1;
-//    double zone2;
-//
-//    zone1 = station1.getZone();
-//    zone2 = station2.getZone();
-//
-//    double price = zone2 - zone1 + 1;
-//    Math.abs(price);
-//    double totalPrice = price * pricePerZone;
-
-//    if (price < 0) {
-//        price = price - (price * 2);
-//        totalPrice = pricePerZone * price;
-//    } else {
-//        totalPrice = pricePerZone * price;
-//    }
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//
-//        Rate rate1;
-//        Double pricePerZone;
-//
-//        Date date1 = df.parse("2020-01-01 00:00");
-//
-//        rate1 = priceCalculatorDAOJaxb.getRate(date1);
-//        assertEquals(Rate.OFFPEAK, rate1);
-//        pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(date1);
-//        assertEquals(2.50, pricePerZone, 0.0001);
-//
-//        date1 = df.parse("2020-03-01 08:25");
-//
-//        rate1 = priceCalculatorDAOJaxb.getRate(date1);
-//        assertEquals(Rate.PEAK, rate1);
-//        pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(date1);
-//        assertEquals(5.00, pricePerZone, 0.0001);
     // Setting up a new Ticket
     if (endStation != startStation) {
         Ticket newTicket = new Ticket();
@@ -155,7 +102,7 @@
             <table>
                 <tr>
                     <td>Starting Station:</td>
-                    <td><input type="text" name="startStation" value="Abbey Road"></td>
+                    <td><input type="text" name="startStation" value="<%=startStation%>"></td>
                     <td>Stations List                       
                         <select name="stationSelect" id="stationSelect">	
                             <%
@@ -169,14 +116,7 @@
                 </tr>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="Croxley"></td>     
-                </tr>
-                <tr>
-                    <td>Credit Card:</td>
-                    <td>
-                        <input type="text" name="creditCard" value="0">
-
-                    </td>
+                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>     
                 </tr>
                 <tr>
                     <td>Issued on:</td>

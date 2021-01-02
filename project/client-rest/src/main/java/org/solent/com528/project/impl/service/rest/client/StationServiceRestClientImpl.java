@@ -47,10 +47,14 @@ public class StationServiceRestClientImpl implements ServiceFacade {
     private String pricingDetailsFile = TMP_DIR + File.separator + "client" + File.separator + "pricingDetailsFile.xml";
 
     private String stationListFile = TMP_DIR + File.separator + "client" + File.separator + "stationListFile.xml";
+    
+    private String ticketMachineListFile = TMP_DIR + File.separator + "client" + File.separator + "ticketMachineListFile.xml";
 
     private String baseUrl = "http://localhost:8080/projectfacadeweb/rest/appointmentService";
 
     private StationDAO stationDAO;
+    
+    private TicketMachineDAO ticketMachineDAO;
 
     private PriceCalculatorDAO priceCalculatorDAO;
 
@@ -59,14 +63,15 @@ public class StationServiceRestClientImpl implements ServiceFacade {
     }
 
     /**
-     * this is a ReST api to get configuration from parent machine http://localhost:8080/projectfacadeweb/rest/stationService/getTicketMachineConfig?uuid=xyz
+     * this is a ReST api to get configuration from parent machine
+     * http://localhost:8080/projectfacadeweb/rest/stationService/getTicketMachineConfig?uuid=xyz
      *
      * @param ticketMachineUuid
      * @return
      */
     @Override
     public TicketMachineConfig getTicketMachineConfig(String ticketMachineUuid) {
-        LOG.debug("getTicketMachineConfig() Called ticketMachineUuid="+ticketMachineUuid);
+        LOG.debug("getTicketMachineConfig() Called ticketMachineUuid=" + ticketMachineUuid);
 
         Client client = ClientBuilder.newClient(new ClientConfig().register(
                 new LoggingFeature(java.util.logging.Logger.getLogger(LoggingFeature.DEFAULT_LOGGER_NAME),
@@ -76,12 +81,11 @@ public class StationServiceRestClientImpl implements ServiceFacade {
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_XML);
         Response response = invocationBuilder.get();
-        
 
         ReplyMessage replyMessage = response.readEntity(ReplyMessage.class);
         LOG.debug("Response status=" + response.getStatus() + " ReplyMessage: " + replyMessage);
 
-        if (replyMessage == null || response.getStatus() !=200) {
+        if (replyMessage == null || response.getStatus() != 200) {
             return null;
         }
         return replyMessage.getTicketMachineConfig();
@@ -91,7 +95,15 @@ public class StationServiceRestClientImpl implements ServiceFacade {
     // NOTE not used in client
     @Override
     public TicketMachineDAO getTicketMachineDAO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (ticketMachineDAO == null) {
+            LOG.debug("creating new TicketMachineDAO ");
+            synchronized (this) {
+                if (ticketMachineDAO == null) {
+                    ticketMachineDAO = new TicketMachineDAOJaxbImpl(ticketMachineListFile);
+                }
+            }
+        }
+        return ticketMachineDAO;
     }
 
     @Override
