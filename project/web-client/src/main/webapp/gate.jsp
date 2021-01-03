@@ -63,7 +63,7 @@
         newCalendar.setTime(issueDate);
         newCalendar.add(Calendar.HOUR_OF_DAY, 4);
         validTime = currentTime.before(newCalendar.getTime());
-    } catch (Exception e) 
+    } catch (Exception e) {
         errorMessage="";
     }
 

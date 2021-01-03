@@ -99,7 +99,7 @@ public class StationServiceRestClientImpl implements ServiceFacade {
             LOG.debug("creating new TicketMachineDAO ");
             synchronized (this) {
                 if (ticketMachineDAO == null) {
-                    ticketMachineDAO = new TicketMachineDAOJaxbImpl(ticketMachineListFile);
+                    //ticketMachineDAO = new TicketMachineDAOJaxbImpl(ticketMachineListFile);
                 }
             }
         }
