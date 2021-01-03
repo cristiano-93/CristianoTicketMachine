@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" time="0.012" errors="3" skipped="0">
+<testsuite tests="3" failures="0" name="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" time="0.009" errors="3" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.8+10-LTS"/>
@@ -49,7 +49,7 @@
     <property name="java.home" value="C:\Program Files\RedHat\java-11-openjdk-11.0.8-2"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="org.apache.logging.log4j.assignedSequences" value="10522"/>
+    <property name="org.apache.logging.log4j.assignedSequences" value="5713"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
     <property name="java.vm.info" value="mixed mode"/>
     <property name="java.version" value="11.0.8"/>
@@ -66,12 +66,12 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" name="addDeletePriceBandsTest" time="0.005">
+  <testcase classname="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" name="addDeletePriceBandsTest" time="0.004">
     <error type="java.lang.NullPointerException">java.lang.NullPointerException
 	at org.solent.com528.project.model.dto.PricingDetails.&lt;init&gt;(PricingDetails.java:33)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:137)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:149)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:48)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:132)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:144)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:43)
 	at org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest.init(PriceCalculatorDAOJaxbImplTest.java:34)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -103,16 +103,16 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </error>
-    <system-out>16:31:24.182 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
-16:31:24.183 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
+    <system-out>16:03:58.060 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
+16:03:58.060 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
 </system-out>
   </testcase>
   <testcase classname="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" name="testInit" time="0.002">
     <error type="java.lang.NullPointerException">java.lang.NullPointerException
 	at org.solent.com528.project.model.dto.PricingDetails.&lt;init&gt;(PricingDetails.java:33)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:137)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:149)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:48)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:132)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:144)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:43)
 	at org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest.init(PriceCalculatorDAOJaxbImplTest.java:34)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -144,16 +144,16 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </error>
-    <system-out>16:31:24.186 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
-16:31:24.186 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
+    <system-out>16:03:58.063 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
+16:03:58.063 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
 </system-out>
   </testcase>
-  <testcase classname="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" name="testGetPriceforTime" time="0.005">
+  <testcase classname="org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest" name="testGetPriceforTime" time="0.003">
     <error type="java.lang.NullPointerException">java.lang.NullPointerException
 	at org.solent.com528.project.model.dto.PricingDetails.&lt;init&gt;(PricingDetails.java:33)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:137)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:149)
-	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:48)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.deleteAll(PriceCalculatorDAOJaxbImpl.java:132)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.load(PriceCalculatorDAOJaxbImpl.java:144)
+	at org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl.&lt;init&gt;(PriceCalculatorDAOJaxbImpl.java:43)
 	at org.solent.com528.project.impl.dao.jaxb.test.PriceCalculatorDAOJaxbImplTest.init(PriceCalculatorDAOJaxbImplTest.java:34)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -185,8 +185,8 @@
 	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:115)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:75)
 </error>
-    <system-out>16:31:24.187 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
-16:31:24.187 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
+    <system-out>16:03:58.064 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - loading pricingDetailsFile from C:\Users\Cristiano\Documents\GitHub\TicketMachine\project\model\target\priceCalculatorDAOJaxbImplFile.xml
+16:03:58.064 [main] DEBUG org.solent.com528.project.impl.dao.jaxb.PriceCalculatorDAOJaxbImpl - pricingDetailsFile does not exist - creating new file 
 </system-out>
   </testcase>
 </testsuite>
