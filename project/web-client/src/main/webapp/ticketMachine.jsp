@@ -28,28 +28,34 @@
     // Setting up variables
     String startStation = request.getParameter("startStation");
     String endStation = request.getParameter("endStation");
+    Integer endZone = 0;
+    Integer zonesTravelled = 0;
     String errorMessage = "";
 
+    try {
+        if (request.getParameter("zonesTravelled") != null) {
+            zonesTravelled = Integer.parseInt(request.getParameter("zonesTravelled"));
+        }
+    } catch (Exception ex) {
+        errorMessage = ex.getMessage() + request.getParameter("zonesTravelled");
+    }
+    try {
+        if (request.getParameter("endZone") != null) {
+            endZone = Integer.parseInt(request.getParameter("endZone"));
+        }
+    } catch (Exception ex) {
+        errorMessage = ex.getMessage() + request.getParameter("endZone"); //printing the value 
+
+    }
 
     //Service    
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
-    Set<Integer> zones = stationDAO.getAllZones();
     List<Station> stationsList = new ArrayList<Station>();
     stationsList = stationDAO.findAll();
 
     String actionStr = request.getParameter("action");
 
-//    if (zoneStr.isEmpty()) {
-//        stationsList = stationDAO.findAll();
-//    } else {
-//        try {
-//            Integer zone = Integer.parseInt(zoneStr);
-//            stationsList = stationDAO.findByZone(zone);
-//        } catch (Exception ex) {
-//            errorMessage = ex.getMessage();
-//        }
-//    }
     // checking for error
     if (actionStr == null || actionStr.isEmpty()) {
     } else {
@@ -65,19 +71,23 @@
 
     String ticket = request.getParameter("ticketStr");
 
+    //checking travelled zones
     // Getting the Price and Rate
     String fileName = "target/priceCalculatorDAOJaxbImplFile.xml";
-    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);    
+    PriceCalculatorDAOJaxbImpl priceCalculatorDAOJaxb = new PriceCalculatorDAOJaxbImpl(fileName);
     Rate rate = priceCalculatorDAOJaxb.getRate(new Date());
     Double pricePerZone = priceCalculatorDAOJaxb.getPricePerZone(new Date());
+    double ticketPrice = 500.0;
+    ticketPrice = pricePerZone * zonesTravelled;
 
     // Setting up a new Ticket
     if (endStation != startStation) {
         Ticket newTicket = new Ticket();
-        newTicket.setCost(pricePerZone);
+        newTicket.setCost(ticketPrice);
         newTicket.setRate(rate);
         newTicket.setStartStation(startStation);
         newTicket.setEndStation(endStation);
+        newTicket.setEndZone(endZone);
         newTicket.setIssueDate(new Date());
 
         String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
@@ -114,8 +124,28 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Stations List                       
+                        <select name="stationSelect" id="stationSelect">	
+                            <%
+                                for (Station station : stationsList) {
+                            %>	
+                            <option value="<%=station.getName()%>"><%=station.getName()%></option>	
+                            <%
+                                }
+                            %>     
+                    </td>
+                </tr>
+                <tr>
                     <td>Ending Station:</td>
                     <td><input type="text" name="endStation" value="<%=endStation%>"></td>     
+                </tr>
+                <tr>
+                    <td>Ending Zone:</td>
+                    <td><input type="text" name="endZone" value="0"></td>     
+                </tr>
+                <tr>
+                    <td>Zones Travelled:</td>
+                    <td><input type="text" name="zonesTravelled" value=""></td>     
                 </tr>
                 <tr>
                     <td>Issued on:</td>

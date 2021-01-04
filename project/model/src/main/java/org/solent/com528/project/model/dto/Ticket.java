@@ -22,6 +22,8 @@ public class Ticket {
     private String startStation;
     
     private String endStation;
+    
+    private Integer endZone;
 
     private Double cost;
 
@@ -31,6 +33,15 @@ public class Ticket {
 
     private Date issueDate;
     
+
+    public Integer getEndZone() {
+        return endZone;
+    }
+
+    public void setEndZone(Integer endZone) {
+        this.endZone = endZone;
+    }
+            
 
     public String getStartStation() {
         return startStation;

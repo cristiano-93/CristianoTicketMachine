@@ -48,26 +48,12 @@
         // note that log name will be org.solent.com528.factoryandfacade.impl.rest.TicketMachineRestService
         final static Logger LOG = LogManager.getLogger(TicketMachineRestService.class);
 
-        /**
-         * this is a very simple rest test message which only returns a string
-         *
-         * http://localhost:8080/projectfacadeweb/rest/stationService/
-         *
-         * @return String simple message
-         */
         @GET
         public String message() {
             LOG.debug("stationService called");
             return "Hello, rest!";
         }
 
-        /**
-         * get heartbeat
-         *
-         * http://localhost:8080/projectfacadeweb/rest/stationService/getTicketMachineConfig?uuid=xyz
-         *
-         * @return list of all Animals in List<String> replyMessage.getStringList()
-         */
         @GET
         @Path("/getTicketMachineConfig")
         @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
