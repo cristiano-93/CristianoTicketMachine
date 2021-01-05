@@ -2,38 +2,37 @@
 
 
 
-# station/stationList/changeConfig test plan  CHANGE!!!!!!!
-
-| 1 | getCurrentStation   | To get the current station from the ticket machine config; based on the provided UUID.                       | Gets the current station.                                      | null                                                       |
-|---|---------------------|--------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------|
-| 2 | createStation       | Creates a new station.                                                                                       | Creates a new station with a UUID set as its name.             | Creates a new station with a UUID set as its name.         |
-| 3 | createTicketMachine | Adds a new ticket machine to the station - associated to the station by the provided UUID.                   | Creates a new ticket machine for the station.                  | Creates a new ticket machine for the station.              |
-| 4 | listStations        | List of all the stations created.                                                                            | Lists all stations.                                            | Lists all stations.                                        |
-| 5 | listTicketMachines  | List all of the ticket machines associated with the station by the provided station UUID.                    | Lists all of the ticket machines for the selected station.     | Lists all of the ticket machines for the selected station. |
-| 6 | updateStation       | Change the name of the station, by using the provided UUID for the station, and the new station name string. | Changes the name of the selected station.                      | Changes the name of the selected station.                  |
-| 7 | deleteStation       | Delete the provided station by the provided UUID.                                                            | Deletes the selected station, and all of it's ticket machines. | error                                                      |
-| 8 | deleteTicketMachine | Delete the ticket machine at the station, by the UUID of the station, and the UUID of the ticket machine.    | Deletes the selected ticket machine from the station.          | Deletes the selected ticket machine from the station.      |
-| 9 | changeConfig        | Set the current ticketMachine to the one associated by the provided UUID                                     | The ticket machine is set to the selected one.                 | The ticket machine does not get set.                       |
 
 
-# ticket machine test plan  CHANGE!!!!!!!!!!!!!!!
+# -> changeConfig / stationList test plan
+|#| Name|Purpose|Expected|Actual|
+|-|-|-|-|-|
+|1|changeConfig|get user input to change the ticketMachine Uuid|receive Uuid and update|load ticketMachine configuration|
+|1|createStation|create a new station and change its name or zone|new station created/name changed/zone changed|station name updated OR zone updated|
+|2|modifyStation|purpose is to modify a existing station name, zone and add a ticket machine|station name or zone updated or new ticket machine added|station name or zone updated or ticket machine added|
+|3|deleteStation|deletes a station from the database list|station deleted|station deleted|
+|4|deleteStationError|deletes a station without first clearing the ticket machines in the station|couldnt delete station due to existing ticket machine|Error - unable to delete|
+|5|deleteAllStations|clears the station list from the database|deletes all stations|all stations deleted|
+|6|listStations|list all stations in the current database|list all stations|display a list of stations|
+|7|listTicketMachines|lists all the ticket machines in a specific station|list all machines from a station|display all machines in station|
+
+
+# -> ticketMachine.jsp test plan  
 
 |#| Name|Purpose|Expected|Actual|
-|---|---|---|---|---|
-|1|getCurrentStationName|To get current station name from the ticket machine config based on corresponding uuid|It will get the correct station name and display it|Displays null value in current station|
-|2|getCurrentStationNameFix|Display Station Name based on uuid instead of null value by correctly configuring ticket machine before|Display correct Station Name|Displays set Station Name|
-|3|getCurrentStationZone|Get the corresponding station zone from the uuid that was set in ticket config|Displays the corresponding station Zone|Displays the correct station Zone|
-|4|listDestinationZones|Creates a list of destination Zone buttons based on existing data|Creates and displays a list of buttons|Creates a list of destination zone buttons|
-|5|selectDestinationZone|Click a destination zone button to change url with corresponding zone information|Adds the zone information to url|Adds the selected zone number to the url|
-|6|stationListDropbox|Create a dropdown that is populated by all stations according to existing data|Creates a dropbox that lists stations|Creates a dropdown that lists stations|
-|7|populateDropdown|When zone button is clicked, populate dropdown with corresponding zones|Correctly Populates Dropdown according to selected zone|Does not display the proper station according to zone|
-|8|populateDropdown|Populate dropdown based on zone input through finding the station list values by zone value|Populates dropdown based on destination zone|Populates properly based on Zone input|
-|9|creditCardCheckTrue|Compare and the input on the credit field to a regex pattern and see if valid|Return True if the entered value is correctly formatted|Returns True for inputted value|
-|10|creditCardCheckFalse|Compare and the input on the credit field to a regex pattern and see if invalid|Return False if the entered value is incorrectly formatted|Returns False for inputted value|
-|11|calculatePriceZones|Minus destination zone from starting zone|Produce a positive value to be used for calculation|Produced a positive or negative value depending on zones|
-|12|calculatePriceZonesFix|Use an absolute to minus destination zone from starting zone|Produce a positive value to be used for calculation|Produced a positive value|
-|13|calculatePriceTicket|Multiply zones travelled value by rate to get price|produces the proper price of a ticket|Produced appropriate ticket price|
-|14|generateTicket|Produces a valid ticket to be used for ticketGate|Produces a ticket with all fields filled|Produces a valid ticket|
+|-|-|-|-|-|
+|1|getStartStationName|get the departure station name from the user input|assign start station name to a variable|station name assigned to a variable|
+|2|getStartStationNameError| set a random name as station name to check if code breaks|error displayed as station name is not accepted|not error displayed (not implemented)|
+|3|getStartZone|get the departure station zone and assign it to a variable|assign start zone to a variable|station zone assigned to a variable|
+|4|getEndStationName|get the destination station name from the user input and assign it to a variable|assign destination name to a variable|destination name assigned to a variable|
+|5|getDestinationZone|get the destination zone and assign to a variable|assign destination zone to a variable|destination zone assigned to a variable|
+|6|getZonesTraveled|get the total zones traveled from the user input|assign the traveled zones to a variable|zones traveled assigned to a variable|
+|7|calculatePrice|calculate the ticket price using the zones traveled variable * pricePerZone|set a ticket price to the ticket object|produces no result as it is not correctly implemented|
+|8|generateTicket|generate a ticket XML code using a encoder|generate a valid ticket XML code|valid ticket XML generated|
+|9|generateTicketError|generate a ticket XML using a random name for the stations|ticket XML not generated and error displayed|ticket XML generated (validation and error catching not implemented)|
+||||||
+||||||
+
 
 
 # -> gate.jsp test plan

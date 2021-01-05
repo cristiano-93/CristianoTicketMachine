@@ -20,15 +20,15 @@
     String errorMessage = "";
     String message = "";
     // used to set html header autoload time. This automatically refreshes the page
-    // Set refresh, autoload time every 20 seconds
-    // response.setIntHeader("Refresh", 20);
+    // Set refresh, autoload time every 60 seconds
+    // response.setIntHeader("Refresh", 60);
+    
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
     TicketMachineDAO ticketMachineDAO = serviceFacade.getTicketMachineDAO();
     // accessing request parameters
     String actionStr = request.getParameter("action");
-    String zoneStr = request.getParameter("zone");
     String stationName = request.getParameter("stationName");
     String updateStationName = request.getParameter("updateStationName");
     String updateZone = request.getParameter("updateZone");
