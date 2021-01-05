@@ -83,14 +83,6 @@ public class Station {
         this.ticketMachines = ticketMachines;
     }
     
-
-
-
-//    @Override
-//    public String toString() {
-//        return "Station{" + "id=" + id + ", name=" + name + ", zone=" + zone + ", ticketMachines=" + ticketMachines + '}';
-//    }
-
     @Override
     public String toString() {
         return "Station{" + "id=" + id + ", name=" + name + ", zone=" + zone + '}';
