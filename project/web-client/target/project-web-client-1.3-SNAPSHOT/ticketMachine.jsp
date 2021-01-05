@@ -53,16 +53,13 @@
         errorMessage = ex.getMessage() + request.getParameter("zonesTravelled");
     }
 
-
     //Service    
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     StationDAO stationDAO = serviceFacade.getStationDAO();
     List<Station> stationsList = new ArrayList<Station>();
     stationsList = stationDAO.findAll();
     String startStationStr = WebClientObjectFactory.getStationName();
-    Integer startStationZoneStr = WebClientObjectFactory.getStationZone();
-    
-    
+
     // Setting up Date/Time values
     Calendar newCalendar = Calendar.getInstance();
     newCalendar.setTime(new Date());
@@ -84,9 +81,9 @@
     Integer totalZones = 1;
 
     //checking travelled zones
-    int endZone = 1;
+    int endZone = 0;
     try {
-        endZone = Integer.parseInt("");
+        endZone = Integer.parseInt(endZoneStr);
         totalZones = Math.abs(startZone - endZone);
         if (totalZones == 0) {
             totalZones = 1;
@@ -94,7 +91,7 @@
         ticketPrice = pricePerZone * totalZones;
         newTicket.setCost(ticketPrice);
     } catch (Exception ex) {
-        errorMessage = "error with zones travelled";
+        errorMessage = ex + "error with zones travelled";
     }
 
     // Setting up a new Ticket
@@ -115,6 +112,30 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Ticket Machine</title>
+        <style>               
+
+            div {display: flex;
+                 justify-content: center;}
+
+            h1 {display: flex;
+                justify-content: center;
+                color: darkslateblue;
+                font-family: "Times New Roman", Times, serif;
+            }
+
+            table {
+                display: flex;
+                justify-content: center;
+            }
+            button {             
+                justify-content: center;
+            }
+            textArea {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+        </style>
     </head>
     <body>
         <h1>Create a New Ticket</h1>
@@ -125,26 +146,15 @@
             <table>
                 <tr>
                     <td>Starting Station:</td>
-                    <td><%=startStationStr%>></td>
-                    <td>Stations List </td>                      
-                    <td><select name="stationSelect" id="stationSelect">	
-                            <%
-                                for (Station station : stationsList) {
-                            %>	
-                            <option value="<%=station.getName()%>"><%=station.getName()%></option>	
-                            <%
-                                }
-                            %>   
-                        </select>  
-                    </td>
+                    <td><input type="text" name="startStation" value=""></td>
                 </tr>
                 <tr>
                     <td>Starting Zone:</td>
-                    <td><input type="text" name="startZone" value="0"></td>
+                    <td><input type="text" name="startZone"></td>
                 </tr>
                 <tr>
                     <td>Ending Station:</td>
-                    <td><input type="text" name="endStation" value="<%=endStation%>"></td>     
+                    <td><input type="text" name="endStation" value=""></td>     
                 </tr>
                 <tr>
                     <td>Ending Zone:</td>
@@ -152,7 +162,7 @@
                 </tr>
                 <tr>
                     <td>Zones Travelled:</td>
-                    <td><input type="text" name="zonesTravelled" value="0"></td>     
+                    <td><input type="text" name="zonesTravelled"></td>     
                 </tr>
                 <tr>
                     <td>Issued on:</td>
@@ -161,20 +171,26 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Valid Untill:</td>
+                    <td>Valid Until:</td>
                     <td>
                         <p><%=validUntill%></p>
                     </td>
                 </tr>
+                <tr>
+                    <td><button type="submit" name="button" >Create Ticket</button></td>
+                </tr>
             </table>
-            <button type="submit" >Create Ticket</button>
-        </form> 
 
-        <form action="index.html">
+        </form> 
+        <form action="index.html" name="home">
             <input type="submit" value="Return to index page" />
         </form>
+
+
         <h1>Generated ticket XML</h1>
-        <textarea id="ticketTextArea" rows="14" cols="120"><%=ticket%></textarea>
+        <div id="textArea">
+            <textarea id="ticketTextArea" rows="14" cols="120"><%=ticket%></textarea>
+        </div>
 
     </body>
 </html>
