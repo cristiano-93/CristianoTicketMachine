@@ -1,6 +1,6 @@
 # Ticket Machine Project
 
-[GitHub repository](https://www.google.com "click to open GitHub")
+[GitHub repository](https://github.com/cristiano-93/TicketMachineWebApp "click to open GitHub")
 
 ## Steps needed to run the project
 
