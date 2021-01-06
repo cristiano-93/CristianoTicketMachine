@@ -1,5 +1,7 @@
 # Ticket Machine Project
 
+[GitHub repository](https://www.google.com "click to open GitHub")
+
 ## Steps needed to run the project
 
 ### -download the project 

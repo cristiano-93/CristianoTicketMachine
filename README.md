@@ -1,8 +1,10 @@
-# Ticket Machine project
+# Ticket Machine Project
 
-steps needed to run the project
+[GitHub repository](https://www.google.com "click to open GitHub")
 
--download the project
--run the command "mvn clean install" in the root folder to build the project
--open with netbeans
--run the project-web or project-web-client file to open the app in a web browser
+## Steps needed to run the project
+
+### -download the project 
+### -run the command "mvn clean install" in the root folder to build the project 
+### -open with netbeans 
+### -run the project-web or project-web-client file to open the app in a web browser
