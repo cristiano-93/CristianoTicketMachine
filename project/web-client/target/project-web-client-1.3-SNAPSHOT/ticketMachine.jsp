@@ -99,7 +99,6 @@
         newTicket.setRate(rate);
         newTicket.setStartStation(startStationStr);
         newTicket.setEndStation(endStation);
-        newTicket.setEndZone(endZone);
         newTicket.setIssueDate(new Date());
 
         String encodedTicket = TicketEncoderImpl.encodeTicket(newTicket);
@@ -160,10 +159,10 @@
                     <td>Ending Zone:</td>
                     <td><input type="text" name="endZoneStr"></td>      
                 </tr>
-                <tr>
+<!--                <tr>
                     <td>Zones Travelled:</td>
                     <td><input type="text" name="zonesTravelled"></td>     
-                </tr>
+                </tr>-->
                 <tr>
                     <td>Issued on:</td>
                     <td>

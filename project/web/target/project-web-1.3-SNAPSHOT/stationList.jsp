@@ -84,8 +84,7 @@
     </head>
     <body>
 
-        <H1>Station List</H1>
-        <!-- print error message if there is one -->
+        <h1>Station List</h1>
         <div style="color:red;"><%=errorMessage%></div>
         <div style="color:green;"><%=message%></div>
 

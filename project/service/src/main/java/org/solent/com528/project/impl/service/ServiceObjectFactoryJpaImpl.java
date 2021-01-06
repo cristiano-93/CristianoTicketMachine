@@ -28,7 +28,6 @@ public class ServiceObjectFactoryJpaImpl implements ServiceObjectFactory {
     public ServiceObjectFactoryJpaImpl() {
         
         daoFactory = new DAOFactoryJPAImpl();
-        //TODO
         //priceCalculatorDAO = daoFactory.getPriceCalculatorDAO();
         stationDAO = daoFactory.getStationDAO();
         ticketMachineDAO = daoFactory.getTicketMachineDAO();

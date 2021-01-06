@@ -78,7 +78,7 @@
             validStation = true;
         }
     } catch (Exception ex) {
-        errorMessage = ex + " Destination station can not be the same as Departure station";
+        errorMessage = " Current Station must be the same as the end station in the ticket";
     }
 
     if (validFormat && validStation && validTime) {

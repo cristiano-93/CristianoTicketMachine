@@ -8,13 +8,13 @@
 |#| Name|Purpose|Expected|Actual|
 |-|-|-|-|-|
 |1|changeConfig|get user input to change the ticketMachine Uuid|receive Uuid and update|load ticketMachine configuration|
-|1|createStation|create a new station and change its name or zone|new station created/name changed/zone changed|station name updated OR zone updated|
-|2|modifyStation|purpose is to modify a existing station name, zone and add a ticket machine|station name or zone updated or new ticket machine added|station name or zone updated or ticket machine added|
-|3|deleteStation|deletes a station from the database list|station deleted|station deleted|
-|4|deleteStationError|deletes a station without first clearing the ticket machines in the station|couldnt delete station due to existing ticket machine|Error - unable to delete|
-|5|deleteAllStations|clears the station list from the database|deletes all stations|all stations deleted|
-|6|listStations|list all stations in the current database|list all stations|display a list of stations|
-|7|listTicketMachines|lists all the ticket machines in a specific station|list all machines from a station|display all machines in station|
+|2|createStation|create a new station and change its name or zone|new station created/name changed/zone changed|station name updated OR zone updated|
+|3|modifyStation|purpose is to modify a existing station name, zone and add a ticket machine|station name or zone updated or new ticket machine added|station name or zone updated or ticket machine added|
+|4|deleteStation|deletes a station from the database list|station deleted|station deleted|
+|5|deleteStationError|deletes a station without first clearing the ticket machines in the station|couldnt delete station due to existing ticket machine|Error - unable to delete|
+|6|deleteAllStations|clears the station list from the database|deletes all stations|all stations deleted|
+|7|listStations|list all stations in the current database|list all stations|display a list of stations|
+|8|listTicketMachines|lists all the ticket machines in a specific station|list all machines from a station|display all machines in station|
 
 
 # -> ticketMachine.jsp test plan  

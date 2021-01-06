@@ -10,9 +10,7 @@
 <%@page import="org.solent.com528.project.model.service.ServiceFacade"%>
 
 <%
-    // used to place error message at top of page 
-    String errorMessage = "";
-    String message = "";
+
     // accessing service 
     ServiceFacade serviceFacade = (ServiceFacade) WebClientObjectFactory.getServiceFacade();
     // accessing request parameters

@@ -14,12 +14,6 @@ import org.solent.com528.project.model.service.ServiceObjectFactory;
 /**
  *
  * @author gallenc
- *//**
- *
- * @author gallenc
- *//**
- *
- * @author gallenc
  */
 public class ClientObjectFactoryImpl implements ServiceObjectFactory {
 

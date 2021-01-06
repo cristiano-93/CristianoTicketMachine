@@ -11,9 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import org.solent.com528.project.model.dao.TicketMachineDAO;
-import org.solent.com528.project.model.dto.Station;
 import org.solent.com528.project.model.dto.TicketMachine;
 
 /**
